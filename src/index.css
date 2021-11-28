@@ -1,13 +1,260 @@
 body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+	background-color: #161616;
+	color: white;
+}
+.showcaseImg {
+	width: 400px;
+	height: 400px;
+	border: white solid 1px;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+.buttons {
+	width: 15%;
+}
+
+.circle {
+	border-radius: 25px;
+}
+
+.box-sm {
+	width: 50px;
+	height: 50px;
+}
+.box-lg {
+	height: 200px;
+}
+
+.pdf-preview img {
+	height: 300px;
+	border-radius: 10px;
+}
+
+.dropdown-toggle::after {
+	display: none;
+}
+
+.dropdown-menu {
+	position: relative;
+}
+
+.dropdown-menu::before {
+	position: absolute;
+	top: -12px;
+	right: 13px;
+	content: url(./images/triangle2.png);
+	/* background-color: yellow; */
+	font-weight: bold;
+	z-index: -9999;
+}
+
+.dropdown-item {
+	display: flex;
+	transition: all 0.3s ease;
+	align-items: center;
+	justify-content: center;
+}
+
+.dropdown-item p,
+.dropdown-item img {
+	margin: auto;
+}
+
+/* MODAL */
+.modal-content {
+	width: 70%;
+	margin: auto;
+	background-color: black;
+}
+.modal-title {
+	margin: auto;
+	margin-top: 31px;
+	font-family: Product Sans;
+	font-style: normal;
+	font-weight: 800;
+	font-size: 36px;
+	line-height: 44px;
+	color: white;
+}
+
+.modal-input {
+	margin: auto;
+	display: flex;
+	flex-direction: column;
+	margin-bottom: 7px;
+	color: white;
+}
+
+.modal-input::placeholder {
+	color: #fff;
+}
+
+.modal-input input:focus::placeholder {
+	color: transparent;
+}
+
+.modal-input label {
+	margin-bottom: 10px;
+	height: 33px;
+
+	font-family: Avenir;
+	font-style: normal;
+	font-weight: 800;
+	font-size: 20px;
+	line-height: 33px;
+	color: #fff;
+}
+
+.modal-input input {
+	width: 100%;
+	height: 40px;
+	margin: auto;
+
+	background-color: #fff;
+	border: 2px solid rgba(210, 210, 210, 0.25);
+	box-sizing: border-box;
+	border-radius: 5px;
+	padding-left: 10px;
+}
+
+.modal-input a {
+	width: 285px;
+	height: 25px;
+	margin: auto;
+	font-family: Avenir thin;
+	font-style: normal;
+	font-weight: normal;
+	font-size: 18px;
+	line-height: 25px;
+	color: #fff;
+}
+
+.modal-btn {
+	margin: auto;
+	border: none;
+	width: 350px;
+	height: 50px;
+	background: #af2e1c;
+	border-radius: 5px;
+
+	font-family: Product Sans;
+	font-style: normal;
+	font-weight: bold;
+	font-size: 24px;
+	line-height: 29px;
+
+	color: #ffffff;
+}
+
+.modal-header {
+	border-bottom: 0 none;
+}
+
+.modal-footer {
+	border-top: 0 none;
+}
+
+/* .nav {
+} */
+
+.logo {
+	height: 110%;
+}
+
+.pointer {
+	cursor: pointer;
+}
+
+.nav {
+	width: 100%;
+	height: 100px;
+	align-items: center;
+}
+
+.border {
+	border: solid !important;
+}
+
+.landing-login {
+	width: 80%;
+	margin: auto;
+	border: solid;
+	padding: 10%;
+	align-items: center;
+	justify-content: center;
+}
+
+/* CARD */
+.items {
+	display: flex;
+	flex-direction: row;
+}
+
+.item {
+	/* width: 300px;
+	height: 400px; */
+}
+
+/* PROFILE */
+.avenir {
+	font-weight: bolder;
+	font-size: 20px;
+}
+
+.profile-card {
+	margin: auto;
+	margin-top: 114px;
+	width: 785px;
+	height: 453px;
+	background: #252525;
+	box-shadow: 0px 0px 4px rgba(5, 5, 5, 0.08);
+	border-radius: 8px;
+}
+
+.profile-card-container {
+	width: 85%;
+	margin: auto;
+}
+
+.personal-info h1 {
+	margin-bottom: 53px;
+}
+
+.profile-container {
+	width: 1035px;
+	margin: auto;
+	margin-top: 108px;
+}
+
+.profile-image {
+	display: flex;
+	flex-direction: column;
+}
+
+.profile-image img {
+	width: 280px;
+	height: 345px;
+}
+
+.p-info-card-text h5 {
+	font-size: 14px;
+}
+
+.change-profile-btn {
+	width: 280px;
+	height: 30px;
+	background: #af2e1c;
+	text-align: center;
+	align-items: center;
+	padding: 20px 40px;
+	border-radius: 5px;
+	/* margin-top: 25px; */
+	color: white !important;
+	border: transparent 1px solid;
+}
+
+/* verif body */
+.verif-body {
+	background-color: #e5e5e5 !important;
+	border: pink solid 1px;
+	color: #000;
 }
