@@ -6,7 +6,7 @@ import Swal from 'sweetalert2';
 // IMPORT API
 import { API } from '../config/api';
 
-const RegisModals = ({ handleClose, show }) => {
+const RegisModals = ({ handleClose, show, handleShowLogin }) => {
 	const { dispatch } = useContext(AuthContext);
 
 	const [form, setForm] = useState({
@@ -103,11 +103,10 @@ const RegisModals = ({ handleClose, show }) => {
 		<>
 			<Modal show={show} onHide={handleClose} centered>
 				<Modal.Header>
-					<Modal.Title>Register</Modal.Title>
+					<Modal.Title>Sign Up</Modal.Title>
 				</Modal.Header>
 				<Modal.Body>
-					<div className="modal-input">
-						<label htmlFor="email">Email</label>
+					<div className="modal-input mb-3">
 						<input
 							type="email"
 							placeholder="Email"
@@ -116,8 +115,7 @@ const RegisModals = ({ handleClose, show }) => {
 							onChange={handleOnChange}
 						/>
 					</div>
-					<div className="modal-input">
-						<label htmlFor="password">Password</label>
+					<div className="modal-input mb-3">
 						<input
 							type="password"
 							placeholder="Password"
@@ -126,8 +124,7 @@ const RegisModals = ({ handleClose, show }) => {
 							onChange={handleOnChange}
 						/>
 					</div>
-					<div className="modal-input">
-						<label htmlFor="fullName">Full Name</label>
+					<div className="modal-input mb-3">
 						<input
 							type="text"
 							placeholder="Name"
@@ -136,23 +133,23 @@ const RegisModals = ({ handleClose, show }) => {
 							onChange={handleOnChange}
 						/>
 					</div>
-					<div className="modal-input">
-						<label htmlFor="gender">Gender</label>
-						<select
-							name="gender"
-							id="gender"
-							className="input-group avenir-thin"
-							onChange={handleOnChange}
-						>
-							<option selected disabled value="choose">
-								Choose
-							</option>
-							<option value="Pria">Pria</option>
-							<option value="Wanita">Wanita</option>
-						</select>
+					<div class="absolute">
+						<div className="modal-input gender mb-3">
+							<select
+								name="gender"
+								id="gender"
+								className="avenir-thin"
+								onChange={handleOnChange}
+							>
+								<option selected disabled value="choose">
+									Gender
+								</option>
+								<option value="Pria">Pria</option>
+								<option value="Wanita">Wanita</option>
+							</select>
+						</div>
 					</div>
-					<div className="modal-input">
-						<label htmlFor="phone">Phone</label>
+					<div className="modal-input mb-3">
 						<input
 							type="number"
 							placeholder="Phone number"
@@ -162,8 +159,7 @@ const RegisModals = ({ handleClose, show }) => {
 							onChange={handleOnChange}
 						/>
 					</div>
-					<div className="modal-input">
-						<label htmlFor="address">Address</label>
+					<div className="modal-input mb-3">
 						<input
 							type="text"
 							placeholder="Address"
@@ -182,8 +178,22 @@ const RegisModals = ({ handleClose, show }) => {
 							handleClose();
 						}}
 					>
-						Register
+						Sign Up
 					</button>
+					<div className="modal-input">
+						<p className="avenir-thin mb-0 mt-3">
+							Already have an account ?{' '}
+							<strong
+								className="red pointer"
+								onClick={() => {
+									handleShowLogin();
+									handleClose();
+								}}
+							>
+								Login
+							</strong>
+						</p>
+					</div>
 				</Modal.Footer>
 			</Modal>
 		</>

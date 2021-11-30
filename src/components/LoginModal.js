@@ -74,13 +74,12 @@ const LoginModals = ({ handleClose, show, handleShowRegis }) => {
 		<>
 			<Modal show={show} onHide={handleClose} centered>
 				<Modal.Header>
-					<Modal.Title>Login</Modal.Title>
+					<Modal.Title>Sign In</Modal.Title>
 				</Modal.Header>
 				<Modal.Body>
-					<div className="modal-input">
-						<label htmlFor="email">Email</label>
+					<div className="modal-input mb-3">
 						<input
-							placeholder="Email address"
+							placeholder="Email"
 							onChange={handleOnChange}
 							value={email}
 							type="email"
@@ -89,7 +88,6 @@ const LoginModals = ({ handleClose, show, handleShowRegis }) => {
 						/>
 					</div>
 					<div className="modal-input">
-						<label htmlFor="password">Password</label>
 						<input
 							placeholder="Password"
 							onChange={handleOnChange}
@@ -98,20 +96,6 @@ const LoginModals = ({ handleClose, show, handleShowRegis }) => {
 							id="password"
 							name="password"
 						/>
-					</div>
-					<div className="modal-input">
-						<p className="avenir-thin mb-0 mt-1">
-							Don't have an account? ? Click{' '}
-							<strong
-								className="orange pointer"
-								onClick={() => {
-									handleShowRegis();
-									handleClose();
-								}}
-							>
-								Here
-							</strong>
-						</p>
 					</div>
 				</Modal.Body>
 				<Modal.Footer>
@@ -122,8 +106,22 @@ const LoginModals = ({ handleClose, show, handleShowRegis }) => {
 							handleClose();
 						}}
 					>
-						Login
+						<p className="avenir-thin mt-1">Sign In</p>
 					</Button>
+					<div className="modal-input">
+						<p className="avenir-thin mb-0 mt-3">
+							Don't have an account ? Click{' '}
+							<strong
+								className="red pointer"
+								onClick={() => {
+									handleShowRegis();
+									handleClose();
+								}}
+							>
+								Here
+							</strong>
+						</p>
+					</div>
 				</Modal.Footer>
 			</Modal>
 		</>

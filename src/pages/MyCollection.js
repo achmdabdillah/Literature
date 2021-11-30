@@ -21,17 +21,27 @@ const MyCollection = () => {
 		getData();
 	}, []);
 
-	// const arr = [1, 2, 3, 4];
 	return (
 		<>
 			<Nav />
 			<div className="container mt-5">
-				<h1>My Collection</h1>
-				<div className="items border">
-					{data.map(item => (
-						<CardPDF item={item.literatures} />
-					))}
-				</div>
+				<h1 className="timesNewRoman mb-5" style={{ fontSize: 30 }}>
+					My Collection
+				</h1>
+				{data.length !== 0 ? (
+					<>
+						<div className="items">
+							{data.map(item => (
+								<CardPDF item={item.literatures} />
+							))}
+						</div>
+					</>
+				) : (
+					<div className="w-100 d-flex flex-column justify-content-center">
+						<h1 className="mx-auto mb-5">No Collection</h1>
+						<h3 className="mx-auto">Start adding your favorite literature</h3>
+					</div>
+				)}
 			</div>
 		</>
 	);

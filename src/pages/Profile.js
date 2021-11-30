@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
 import CardPDF from '../components/CardPDF';
-import Nav from '../components/Nav';
+import MyNav from '../components/Nav';
 import Swal from 'sweetalert2';
+import { Nav } from 'react-bootstrap';
 
 import { API } from '../config/api';
 
 const Profile = () => {
 	const history = useHistory();
 	const [user, setUser] = useState([]);
-	const [preview, setPreview] = useState('');
+	const [preview, setPreview] = useState(null);
 	const [form, setForm] = useState('');
 
 	const getUser = async () => {
@@ -35,8 +36,10 @@ const Profile = () => {
 		if (e.target.type === 'file') {
 			setForm(e.target.files);
 
-			let url = URL.createObjectURL(e.target.files[0]);
-			setPreview(url);
+			if (e.target.files.length !== 0) {
+				let url = URL.createObjectURL(e.target.files[0]);
+				setPreview(url);
+			}
 		}
 	};
 
@@ -67,89 +70,120 @@ const Profile = () => {
 		}
 	};
 
+	const [status, setStatus] = useState('Approved');
+
 	useEffect(() => {
 		getUser();
 		getData();
 	}, []);
 	return (
 		<>
-			<Nav />
+			<MyNav />
 			<div className="container">
-				<div className="d-block">
-					<div className="profile-card">
-						<div className="profile-card-container pt-3 d-flex justify-content-between">
-							<div className="personal-info">
-								<h1>Personal Info</h1>
-								<div className="p-info-card d-flex align-items-center my-auto">
-									<img src="/icons/profilepic.png" alt="" />
-									<div className="p-info-card-text ps-3">
-										<h5 className="avenir mb-0">{user?.fullName}</h5>
-										<p>Full name</p>
-									</div>
-								</div>
-								<div className="p-info-card d-flex align-items-center my-auto">
-									<img src="/icons/email.png" alt="" />
-									<div className="p-info-card-text ps-3">
-										<h5 className="avenir mb-0">{user?.email}</h5>
-										<p>Email</p>
-									</div>
-								</div>
-								<div className="p-info-card d-flex align-items-center my-auto">
-									<img src="/icons/phone.png" alt="" />
-									<div className="p-info-card-text ps-3">
-										<h5 className="avenir mb-0">{user?.phone}</h5>
-										<p>Phone</p>
-									</div>
-								</div>
-								<div className="p-info-card d-flex align-items-center my-auto">
-									<img className="me-1" src="/icons/location.png" alt="" />
-									<div className="p-info-card-text ps-3">
-										<h5 className="avenir mb-0">{user?.address}</h5>
-										<p>Address</p>
-									</div>
+				<h1 className="my-5 timesNewRoman" style={{ fontSize: 36 }}>
+					Profile
+				</h1>
+				<div className="profile-card">
+					<div className="profile-card-container pt-3 d-flex justify-content-between">
+						<div className="personal-info">
+							<div className="p-info-card d-flex align-items-center my-4">
+								<img src="/icons/email.png" alt="" />
+								<div className="p-info-card-text ps-3">
+									<h5 className="avenir mb-0">{user?.email}</h5>
+									<p>Email</p>
 								</div>
 							</div>
-							<div className="profile-image">
-								<label for="image">
-									<img
-										className="box pointer"
-										src={
-											user.profilePicture !== null
-												? user?.profilePicture
-												: preview
-												? preview
-												: '/images/Avatar.png'
-										}
-										alt="avatar"
-									/>
-								</label>
-								<div>
-									<input
-										type="file"
-										id="image"
-										className="pointer avenir-thin fs-6 pointer a filestyle"
-										name="image"
-										onChange={handleOnChange}
-									></input>
+							<div className="p-info-card d-flex align-items-center my-4">
+								<img src="/icons/gender.png" alt="" />
+								<div className="p-info-card-text ps-3">
+									<h5 className="avenir mb-0">{user?.gender}</h5>
+									<p>Gender</p>
 								</div>
-								<button
-									className="change-profile-btn avenir-thin"
-									onClick={handleUpload}
-								>
-									Upload
-								</button>
 							</div>
+							<div className="p-info-card d-flex align-items-center my-4">
+								<img src="/icons/phone.png" alt="" />
+								<div className="p-info-card-text ps-3">
+									<h5 className="avenir mb-0">{user?.phone}</h5>
+									<p>Phone</p>
+								</div>
+							</div>
+							<div className="p-info-card d-flex align-items-center my-4">
+								<img className="me-1" src="/icons/location.png" alt="" />
+								<div className="p-info-card-text ps-3">
+									<h5 className="avenir mb-0">{user?.address}</h5>
+									<p>Address</p>
+								</div>
+							</div>
+						</div>
+						<div className="profile-image my-auto">
+							<label for="image">
+								<img
+									className="box pointer"
+									src={
+										preview !== null
+											? preview
+											: user.profilePicture !== null
+											? user?.profilePicture
+											: 'images/Avatar.png'
+									}
+									alt=""
+								/>
+							</label>
+							<div>
+								<input
+									type="file"
+									id="image"
+									className="pointer avenir-thin fs-6 pointer a filestyle"
+									name="image"
+									onChange={handleOnChange}
+								></input>
+							</div>
+							<button
+								className="change-profile-btn avenir-thin mt-4"
+								onClick={handleUpload}
+							>
+								Change Photo Profile
+							</button>
 						</div>
 					</div>
 				</div>
-				<h1 className="mt-5">My Literature</h1>
-				<div className="items">
-					{data
-						?.filter(item => item.status === 'Approved')
-						.map(item => (
-							<CardPDF item={item} />
-						))}
-				</div>
+				<h1 className="my-5 timesNewRoman" style={{ fontSize: 36 }}>
+					My Literature
+				</h1>
+
+				{data.length !== 0 ? (
+					<>
+						<Nav
+							className="mb-3"
+							variant="tabs"
+							defaultActiveKey="Approved"
+							onSelect={selectedKey => setStatus(selectedKey)}
+						>
+							<Nav.Item>
+								<Nav.Link eventKey="Approved">Approved</Nav.Link>
+							</Nav.Item>
+							<Nav.Item>
+								<Nav.Link eventKey="Waiting Approve">Waiting Approve</Nav.Link>
+							</Nav.Item>
+							<Nav.Item>
+								<Nav.Link eventKey="Cancelled">Cancelled</Nav.Link>
+							</Nav.Item>
+						</Nav>
+						<div className="items">
+							{data
+								?.filter(item => item.status === status)
+								.map(item => (
+									<CardPDF item={item} />
+								))}
+						</div>
+					</>
+				) : (
+					<div className="no-data d-flex flex-column">
+						<img src="/assets/no-data.png" height="400" alt="" />
+
+						<h1 className="my-5">No Literature Added</h1>
+					</div>
+				)}
 			</div>
 		</>
 	);

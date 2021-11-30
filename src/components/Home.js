@@ -8,22 +8,22 @@ const LandingLogin = () => {
 		setInput(e.target.value);
 	};
 	return (
-		<div className="landing-login">
+		<div className="user-home container">
 			<img src="/assets/logo.png" alt="" />
 			<div className="input-group mb-3">
 				<input
 					type="text"
-					className="form-control"
+					className="form-control search-box"
 					placeholder="Search for literature"
 					onChange={handleOnChange}
 				/>
 				<button
-					className="btn btn-outline-secondary"
+					className="ms-2 search-btn rounded"
 					type="button"
 					id="button-addon2"
-					onClick={() => history.push(`/literatures?title=${input}`)}
+					onClick={() => history.push(`/search?title=${input}`)}
 				>
-					Search
+					<img src="/assets/lup.png" height="30px" alt="" />
 				</button>
 			</div>
 		</div>

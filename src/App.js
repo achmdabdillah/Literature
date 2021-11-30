@@ -82,7 +82,7 @@ function App() {
 				) : (
 					<>
 						<Route exact path="/" component={Landing} />
-						<Route exact path="/literatures" component={SearchLiterature} />
+						<Route exact path="/search" component={SearchLiterature} />
 						<UserRoute
 							exact
 							path="/literatures/:id"

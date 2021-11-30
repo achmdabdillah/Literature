@@ -14,16 +14,27 @@ const LandingNotLogin = () => {
 	const handleShow1 = () => setShow1(true);
 
 	return (
-		<div className="d-flex flex-row justify-content-around">
-			<div class="landing-body-start mt-5">
-				<p>source of intelligent</p>
-				<p>
+		<div className="d-flex flex-row justify-content-around container">
+			<div class="landing-body-start">
+				<p className="timesNewRoman">
+					source <span className="italic">of</span> intelligent
+				</p>
+				<p className="avenir-thin mx-2" style={{ fontSize: '24px' }}>
 					Sign-up and receive unlimited accesss to all of your literatur - share
 					your literature.
 				</p>
-				<div class="d-flex flex-row">
-					<button className="login" variant="primary" onClick={handleShow}>
-						Login
+				<div class="d-flex flex-row  w-75 justify-content-between">
+					<button className="register-btn" onClick={handleShow1}>
+						<p className="avenir-thin">Sign Up</p>
+					</button>
+					<RegisModals
+						handleClose={handleClose1}
+						handleShowLogin={handleShow}
+						show={show1}
+					/>
+					{/* LOGIN */}
+					<button className="login-btn" onClick={handleShow}>
+						<p className="avenir-thin">Sign In</p>
 					</button>
 					<LoginModals
 						handleClose={handleClose}
@@ -31,11 +42,6 @@ const LandingNotLogin = () => {
 						show1={show1}
 						handleShowRegis={handleShow1}
 					/>
-					{/* REGISTER */}
-					<button className="register" variant="primary" onClick={handleShow1}>
-						Register
-					</button>
-					<RegisModals handleClose={handleClose1} show={show1} />
 				</div>
 			</div>
 			<img src="/assets/showcase.png" alt="" className="showcaseImg" />

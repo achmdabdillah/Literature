@@ -3,16 +3,17 @@ import { useHistory } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 
 const Nav = () => {
+	const current = window.location.href.split('/')[3];
 	let history = useHistory();
 	const { state, dispatch } = useContext(AuthContext);
 	return (
 		<div className="container">
 			{state.isLogin ? (
 				state.user.status === 'admin' ? (
-					<div className="nav border d-flex justify-content-between">
+					<div className="nav d-flex justify-content-between">
 						<img src="/assets/logo.png" alt="" className="img-fluid logo" />
 						{/* Nav start */}
-						<nav className="navbar navbar-expand-lg navbar-dark bg-brokenwhite border">
+						<nav className="navbar navbar-expand-lg navbar-dark bg-brokenwhite">
 							<div className="container-fluid">
 								<button
 									className="navbar-toggler"
@@ -71,42 +72,64 @@ const Nav = () => {
 					</div>
 				) : (
 					<div className="nav">
-						<div className="d-flex flex-row justify-content-around border w-50">
-							<p className="pointer" onClick={() => history.push('/profile')}>
+						<div className="nav-item d-flex flex-row justify-content-between w-50">
+							<p
+								className={
+									current === 'profile'
+										? 'pointer avenir-thin red'
+										: 'pointer avenir-thin'
+								}
+								onClick={() => history.push('/profile')}
+							>
 								Profile
 							</p>
 							<p
-								className="pointer"
+								className={
+									current === 'collection'
+										? 'pointer avenir-thin red'
+										: 'pointer avenir-thin'
+								}
 								onClick={() => history.push('/collection')}
 							>
 								My Collection
 							</p>
 							<p
-								className="pointer"
+								className={
+									current === 'add-literatures'
+										? 'pointer avenir-thin red'
+										: 'pointer avenir-thin'
+								}
 								onClick={() => history.push('/add-literatures')}
 							>
 								Add Literature
 							</p>
 							<p
-								className="pointer"
+								className="pointer avenir-thin"
 								onClick={() => dispatch({ type: 'LOGOUT' })}
 							>
 								Logout
 							</p>
 						</div>
-						<div className="logo w-50 border d-flex justify-content-end">
+						<div className="logo w-50 d-flex justify-content-end mb-3">
 							<img
 								onClick={() => history.push('/')}
 								src="/assets/logo.png"
 								alt=""
-								className="img-fluid pointer"
+								className="pointer me-3"
 							/>
 						</div>
 					</div>
 				)
 			) : (
 				<div className="nav">
-					<img src="/assets/logo.png" alt="" className="img-fluid logo" />
+					<div className="logo end ms-3 mb-3">
+						<img
+							onClick={() => history.push('/')}
+							src="/assets/logo.png"
+							alt=""
+							className="pointer logo"
+						/>
+					</div>
 				</div>
 			)}
 		</div>

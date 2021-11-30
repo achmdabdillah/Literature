@@ -2,7 +2,9 @@ import { useState } from 'react';
 import { useHistory } from 'react-router';
 import Swal from 'sweetalert2';
 import Nav from '../components//Nav';
+import AddLiteratureModal from '../components/AddLiteratureModal';
 
+import { Formik } from 'formik';
 import { API } from '../config/api';
 
 const AddLiterature = () => {
@@ -16,8 +18,14 @@ const AddLiterature = () => {
 		attachment: '',
 		thumbnail: '',
 	});
+
+	const [show, setShow] = useState(false);
+	const handleClose = () => setShow(false);
+	const handleShow = () => setShow(true);
+
 	console.log(data);
 	const [preview, setPreview] = useState('');
+	const [PDFName, setPDFName] = useState(null);
 
 	const handleOnChange = e => {
 		setData(prevState => ({
@@ -27,140 +35,204 @@ const AddLiterature = () => {
 		}));
 		if (e.target.type === 'file') {
 			const fileList = e.target.files;
-			// console.log(fileList[0].type);
-			if (fileList[0].type === 'image/jpeg') {
-				console.log(fileList);
+			if (fileList[0].type === 'application/pdf') {
+				setPDFName(fileList[0].name);
+			}
+			if (
+				fileList[0].type === 'image/jpeg' ||
+				fileList[0].type === 'image/png'
+			) {
 				setPreview(URL.createObjectURL(fileList[0]));
 			}
 		}
 	};
 
-	const handleOnSubmit = async e => {
-		try {
-			e.preventDefault();
-			const config = {
-				headers: {
-					'Content-Type': 'multipart/form-data',
-				},
-			};
-			const formData = new FormData();
-			// console.log(data);
-			formData.set('title', data.title);
-			formData.set('publication_date', data.publication_date);
-			formData.set('pages', data.pages);
-			formData.set('ISBN', data.isbn);
-			formData.set('author', data.author);
-			formData.set('attachment', data.attachment);
-			formData.set('thumbnail', data.thumbnail);
-			// Insert data trip to database here ...
-			const response = await API.post('/literatures', formData, config);
-			if (response?.status === 200) {
-				Swal.fire({
-					icon: 'success',
-					title: 'Success',
-					text: 'Literature added',
-				});
-				history.push('/profile');
-			}
-		} catch (error) {
-			if (error) throw error;
+	const handleSubmit = async () => {
+		if (
+			(!data.title || !data.title,
+			!data.publication_date,
+			!data.pages,
+			!data.isbn,
+			!data.author,
+			!data.attachment,
+			!data.thumbnail)
+		) {
 			Swal.fire({
 				icon: 'error',
 				title: 'Oops..',
-				text: 'Something went wrong',
+				text: 'Please fill all of the input',
 			});
+		} else {
+			try {
+				const config = {
+					headers: {
+						'Content-Type': 'multipart/form-data',
+					},
+				};
+				const formData = new FormData();
+				formData.set('title', data.title);
+				formData.set('publication_date', data.publication_date);
+				formData.set('pages', data.pages);
+				formData.set('ISBN', data.isbn);
+				formData.set('author', data.author);
+				formData.set('attachment', data.attachment);
+				formData.set('thumbnail', data.thumbnail);
+				// Insert data trip to database here ...
+				const response = await API.post('/literatures', formData, config);
+				if (response?.status === 200) {
+					Swal.fire({
+						icon: 'success',
+						title: 'Success',
+						text: 'Literature added',
+					});
+					history.push('/profile');
+				}
+			} catch (error) {
+				Swal.fire({
+					icon: 'error',
+					title: 'Oops..',
+					text: 'Literature already exist',
+				});
+			}
+		}
+	};
+
+	const onFocus = e => {
+		e.target.type = 'date';
+	};
+	const hideLabel = e => {
+		let label = e.target.previousSibling;
+		label.classList.add('filestyle');
+	};
+	const showLabel = e => {
+		if (!data.author) {
+			let label = e.target.previousSibling;
+			label.classList.remove('filestyle');
 		}
 	};
 	return (
 		<>
 			<Nav />
 			<div className="container">
-				<div className="container my-5">
-					<h1>Add Literature</h1>
+				<div className="my-4">
+					<h1 className="timesNewRoman" style={{ fontSize: 36 }}>
+						Add Literature
+					</h1>
 				</div>
-				<form onSubmit={handleOnSubmit}>
-					<label htmlFor="title">Title</label>
+				<div className="add-literature avenir-thin">
 					<input
 						type="text"
 						className="input-group"
 						id="title"
 						onChange={handleOnChange}
 						value={data.title}
+						placeholder="Title"
 					/>
-					<label htmlFor="publication_date">Publication Date</label>
 					<input
-						type="date"
+						onFocus={onFocus}
+						type="text"
 						className="input-group"
 						id="publication_date"
 						onChange={handleOnChange}
+						placeholder="Publication Date"
 						value={data.publication_date}
 					/>
-					<label htmlFor="pages">Pages</label>
 					<input
 						type="text"
 						className="input-group"
 						id="pages"
 						onChange={handleOnChange}
 						value={data.pages}
+						placeholder="Pages"
 					/>
-					<label htmlFor="isbn">ISBN</label>
 					<input
 						type="text"
 						className="input-group"
 						id="isbn"
 						onChange={handleOnChange}
 						value={data.isbn}
+						placeholder="ISBN"
 					/>
-					<label htmlFor="author">Author</label>
-					<input
-						type="text"
-						className="input-group"
-						id="author"
-						onChange={handleOnChange}
-						value={data.author}
-					/>
-
-					<p>files</p>
-					<input
-						type="file"
-						id="attachment"
-						placeholder="Attach file"
-						className="filestyle"
-						onChange={handleOnChange}
-					/>
-					<label htmlFor="attachment" className="justify-content-between">
-						<div className="btn attach-btn d-flex justify-content-between">
-							<p href="" className="avenir status-orange">
-								Attach Here
-							</p>
-							<img src="/assets/paperclip.png" alt="" className="ms-5" />
-						</div>
-					</label>
-					<p>thumbnail</p>
-					<input
-						type="file"
-						id="thumbnail"
-						placeholder="Attach file"
-						className="filestyle"
-						onChange={handleOnChange}
-					/>
-					<label htmlFor="thumbnail" className="justify-content-between">
-						<div className="btn attach-btn d-flex justify-content-between">
-							<p href="" className="avenir status-orange">
-								Attach Here
-							</p>
-							<img src="/assets/paperclip.png" alt="" className="ms-5" />
-						</div>
-					</label>
-					<div className="box-lg">
-						{preview ? (
-							<img src={preview} alt="preview" className="box-lg" />
-						) : (
-							<p>no image to show</p>
-						)}
+					<div className="relative">
+						<label className="author-label" htmlFor="author">
+							Author,{' '}
+							<span style={{ color: '#929292' }}>
+								Ex : E E Rizky, Astina Haris
+							</span>
+						</label>
+						<input
+							onFocus={hideLabel}
+							onBlur={showLabel}
+							type="text"
+							className="input-group tst"
+							id="author"
+							onChange={handleOnChange}
+							value={data.author}
+						/>
 					</div>
-					<button className="form-btn">Add Literature</button>
-				</form>
+
+					<div className="d-flex flex-column">
+						<div className="mb-4">
+							<input
+								type="file"
+								id="attachment"
+								placeholder="Attach file"
+								className="filestyle"
+								onChange={handleOnChange}
+							/>
+							<label htmlFor="attachment">
+								<div className="attach-btn d-flex justify-content-around pointer">
+									<p href="" className="avenir pt-2 w-50 pdf-name">
+										{PDFName !== null ? PDFName : 'Attach Book File'}
+									</p>
+									<img
+										src="/assets/paperclip.png"
+										alt=""
+										height="30"
+										className="ms-5 mt-2"
+									/>
+								</div>
+							</label>
+						</div>
+						<div className="mt-2 mb-4">
+							<input
+								type="file"
+								id="thumbnail"
+								placeholder="Attach file"
+								className="filestyle"
+								onChange={handleOnChange}
+							/>
+							<label htmlFor="thumbnail">
+								<div className="attach-btn d-flex justify-content-around pointer">
+									<p className="avenir pt-2 w-50">Attach Thumbnail</p>
+									<img
+										src="/assets/paperclip.png"
+										height="30"
+										alt=""
+										className="ms-5 mt-2"
+									/>
+								</div>
+							</label>
+						</div>
+					</div>
+					{preview ? (
+						<div className="box-lg">
+							<img src={preview} alt="preview" className="box-lg" />
+						</div>
+					) : (
+						<></>
+					)}
+					<div className="d-flex justify-content-end">
+						<button className="form-btn pointer" onClick={handleShow}>
+							Add Literature
+						</button>
+					</div>
+					<AddLiteratureModal
+						handleSubmit={handleSubmit}
+						handleClose={handleClose}
+						show={show}
+					/>
+				</div>
 			</div>
 		</>
 	);

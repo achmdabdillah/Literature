@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import Nav from '../components/Nav';
 
 import { API } from '../config/api';
@@ -6,6 +6,7 @@ import { API } from '../config/api';
 const BookVerification = () => {
 	// Get Data
 	const [data, setData] = useState([]);
+	const [status, setStatus] = useState('Waiting Approve');
 
 	const getData = async () => {
 		try {
@@ -39,47 +40,97 @@ const BookVerification = () => {
 	return (
 		<>
 			<Nav />
-			<div className="verif-body mt-5 border">
+			<div className="verif-body">
 				<div className="container d-flex flex-column">
-					<h1 className="list-title">Book verification</h1>
-					<table className="transaction-tbl">
-						<tr>
-							<th>No</th>
-							<th>Users or Author</th>
-							<th>ISBN</th>
-							<th>Literatur</th>
-							<th>Status</th>
-							<th>Action</th>
-						</tr>
-						{data
-							.filter(item => item.status !== 'Approved')
-							.map((item, i) => (
-								<tr>
-									<td>{i + 1}</td>
-									<td>{item?.author}</td>
-									<td>{item?.ISBN}</td>
-									<td>{item?.attachment}</td>
-									<td>{item?.status}</td>
-									<td className="buttons border">
-										{item?.status === 'Waiting Approve' ? (
-											<div className="d-flex justify-content-between">
-												<button
-													onClick={() => updateData(item?.id, 'Cancelled')}
-												>
-													Cancel
-												</button>
-												<button
-													onClick={() => updateData(item?.id, 'Approved')}
-												>
-													Approve
-												</button>
-											</div>
-										) : (
-											<p>DONE ICON</p>
-										)}
-									</td>
-								</tr>
-							))}
+					<div className="d-flex justify-content-between align-items-center">
+						<h1 className="list-title my-4">Book verification</h1>
+						<div>
+							<select
+								className="status"
+								name="year"
+								onChange={e => setStatus(e.target.value)}
+							>
+								<option defaultValue={true} value="Waiting Approve">
+									Waiting Approve
+								</option>
+								<option value="Approved">Approved</option>
+								<option value="Cancelled">Cancelled</option>
+							</select>
+						</div>
+					</div>
+					<table className="verification-tbl roboto">
+						<tbody>
+							<tr className="roboto-bold">
+								<th className="w-10">No</th>
+								<th className="w-18">Users or Author</th>
+								<th className="w-18">ISBN</th>
+								<th className="w-18">Literatur</th>
+								<th className="w-20">Status</th>
+								<th className="center d-flex">
+									<p>Action</p>
+								</th>
+							</tr>
+							{data
+								.filter(item => item.status === status)
+								.map((item, i) => (
+									<tr key={i}>
+										<td>{i + 1}</td>
+										<td>{item?.author}</td>
+										<td>{item?.ISBN}</td>
+										<td
+											className="w-20"
+											style={{ color: '#0058DD', textDecoration: 'none' }}
+										>
+											<a
+												href={item?.attachment}
+												target="_blank"
+												rel="noreferrer"
+											>
+												{item?.title}.pdf
+											</a>
+										</td>
+										<td
+											className={
+												item?.status === 'Approved'
+													? 'roboto-bold status-green w-15'
+													: item?.status === 'Cancelled'
+													? 'roboto-bold status-red w-15'
+													: 'roboto-bold status-orange w-15'
+											}
+										>
+											{item?.status}
+										</td>
+										<td className="buttons">
+											{item?.status === 'Waiting Approve' ? (
+												<>
+													<div className="d-flex justify-content-around">
+														<button
+															style={{ backgroundColor: '#FF0742' }}
+															className="verif-button avenir rounded"
+															onClick={() => updateData(item?.id, 'Cancelled')}
+														>
+															Cancel
+														</button>
+														<button
+															style={{ backgroundColor: '#0ACF83' }}
+															className="verif-button avenir rounded"
+															onClick={() => updateData(item?.id, 'Approved')}
+														>
+															Approve
+														</button>
+													</div>
+												</>
+											) : (
+												<>
+													<div className="center d-flex">
+														<img src="/assets/done.png" height="40" alt="" />
+													</div>
+												</>
+											)}
+										</td>
+									</tr>
+								))}
+						</tbody>
 					</table>
 				</div>
 			</div>

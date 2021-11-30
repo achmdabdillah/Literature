@@ -8,22 +8,16 @@ const CardPDF = ({ item }) => {
 		history.push(`/literatures/${item?.id}`);
 	};
 	return (
-		<div onClick={handleDetail} className="item pointer me-5 border">
+		<div onClick={handleDetail} className="item pointer">
 			<div className="pdf-preview">
 				<img src={item.thumbnail} alt="" />
-				{/* <embed
-					onClickCapture={() => console.log('object')}
-					src={item?.attachment}
-					width="300px"
-					height="300px"
-					className="pointer"
-					type="application/pdf"
-				/> */}
 			</div>
-			<div className="pdf-title">{item?.title}</div>
-			<div className="pdf-info">
+			<div className="pdf-title timesNewRoman mb-3" style={{ fontSize: 24 }}>
+				{item?.title}
+			</div>
+			<div className="pdf-info avenir-thin" style={{ color: '#929292' }}>
 				<div className="d-flex flex-row justify-content-between">
-					<p className="me-2">{item?.author}</p>
+					<p className="me-2 w-50">{item?.author}</p>
 					<p>{item?.public_year}</p>
 				</div>
 			</div>
