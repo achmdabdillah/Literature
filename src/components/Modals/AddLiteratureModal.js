@@ -18,8 +18,8 @@ const AddLiteratureModal = ({ handleSubmit, handleClose, show }) => {
 				<div>
 					<Button
 						onClick={() => {
-							handleSubmit();
 							handleClose();
+							handleSubmit();
 						}}
 						className="form-btn m-0"
 					>

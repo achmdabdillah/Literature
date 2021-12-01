@@ -1,14 +1,14 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { useParams } from 'react-router';
+import { useParams, useHistory } from 'react-router';
 import Swal from 'sweetalert2';
 import Nav from '../components/Structure/Nav';
 
 import { API } from '../config/api';
 import downloader from '../tools/Downloader';
 import { AuthContext } from '../context/AuthContext';
-import LiteratureForm from '../components/Modals/LiteratureForm';
 
 const DetailLiteratur = () => {
+	const history = useHistory();
 	const { state } = useContext(AuthContext);
 	const dateFormatter = inputDate => {
 		let data = new Date(inputDate).toString();
@@ -90,6 +90,22 @@ const DetailLiteratur = () => {
 				setCollectionID(null);
 			}
 			getCollection();
+		} catch (error) {
+			alert('Cannot get data');
+		}
+	};
+
+	const deleteLiterature = async () => {
+		try {
+			const response = await API.delete(`/literatures/${data?.id}`);
+			if (response.status === 200) {
+				Swal.fire({
+					icon: 'success',
+					title: 'Success',
+					text: 'Literature deleted',
+				});
+				history.push('/profile');
+			}
 		} catch (error) {
 			alert('Cannot get data');
 		}
@@ -205,27 +221,35 @@ const DetailLiteratur = () => {
 										data-bs-toggle="modal"
 										data-bs-target="#staticBackdrop"
 									>
-										Edit
+										Delete
 									</button>
 									{/* modal start */}
 									<div
 										className="modal fade"
 										id="staticBackdrop"
-										data-bs-backdrop="static"
 										data-bs-keyboard="false"
 										tabindex="-1"
 										aria-labelledby="staticBackdropLabel"
 										aria-hidden="true"
 									>
-										<div className="modal-dialog w-110">
+										<div className="modal-dialog modal-dialog-centered">
 											<div className="modal-content">
-												<div class="modal-header">
-													<h5 class="modal-title" id="staticBackdropLabel">
-														Edit literature
+												<div className="modal-header">
+													<h5 className="modal-title" id="staticBackdropLabel">
+														Delete literature?
 													</h5>
 												</div>
 												<div className="modal-body">
-													<LiteratureForm refresh={getData} oldData={data} />
+													<p>Note that this action cannot be undone</p>
+												</div>
+												<div className="modal-footer">
+													<button
+														onClick={deleteLiterature}
+														className="my-collection-btn w-50 rounded"
+														data-bs-dismiss="modal"
+													>
+														Delete
+													</button>
 												</div>
 											</div>
 										</div>

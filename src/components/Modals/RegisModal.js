@@ -18,7 +18,7 @@ const RegisModals = ({ handleClose, show, handleShowLogin }) => {
 		address: '',
 	});
 
-	const { fullName, email, password, gender, phone, address } = form;
+	const { fullName, email, password, phone, address } = form;
 
 	const handleOnChange = e => {
 		setForm({
@@ -50,6 +50,7 @@ const RegisModals = ({ handleClose, show, handleShowLogin }) => {
 				});
 			}
 		} catch (error) {
+			const msg = error.response.data.error.message;
 			setForm({
 				fullName: '',
 				email: '',
@@ -60,9 +61,8 @@ const RegisModals = ({ handleClose, show, handleShowLogin }) => {
 			Swal.fire({
 				icon: 'error',
 				title: 'Failed',
-				text: 'Register failed',
+				text: msg,
 			});
-			console.log(error);
 		}
 	};
 

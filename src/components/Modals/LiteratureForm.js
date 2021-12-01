@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import Swal from 'sweetalert2';
-import AddLiteratureModal from './AddLiteratureModal';
+// import AddLiteratureModal from './AddLiteratureModal';
 
 import { API } from '../../config/api';
 const LiteratureForm = ({ oldData, refresh }) => {
@@ -13,6 +13,7 @@ const LiteratureForm = ({ oldData, refresh }) => {
 	const [PDFName, setPDFName] = useState(null);
 
 	const handleOnChange = e => {
+		console.log(e.target.value);
 		setData(prevState => ({
 			...prevState,
 			[e.target.id]:
@@ -35,27 +36,35 @@ const LiteratureForm = ({ oldData, refresh }) => {
 	const handleSubmit = async e => {
 		e.preventDefault();
 		try {
-			const config = {
-				headers: {
-					'Content-Type': 'multipart/form-data',
-				},
-			};
-			console.log(data);
+			let config;
+			if (data.attachment.type === 'application/pdf') {
+				config = {
+					headers: {
+						'Content-Type': 'multipart/form-data',
+					},
+				};
+			} else {
+				config = {
+					headers: {
+						'Content-Type': 'application/json',
+					},
+				};
+			}
 			const formData = new FormData();
 			formData.set('title', data.title);
 			formData.set('publication_date', data.publication_date);
 			formData.set('pages', data.pages);
-			formData.set('ISBN', data.isbn);
+			formData.set('ISBN', data.ISBN);
 			formData.set('author', data.author);
-			formData.set('attachment', data.attachment, data?.attachment.name);
+			formData.set('attachment', data.attachment);
 			formData.set('thumbnail', data.thumbnail);
+			console.log(data.attachment);
 			// Insert data to database here ...
 			const response = await API.patch(
 				`/literatures/${oldData?.id}`,
 				formData,
 				config
 			);
-			console.log(response);
 			if (response?.status === 200) {
 				refresh();
 				Swal.fire({
@@ -110,9 +119,8 @@ const LiteratureForm = ({ oldData, refresh }) => {
 				type="text"
 				className="input-group"
 				id="isbn"
+				value={data.ISBN}
 				onChange={handleOnChange}
-				value={data.isbn}
-				placeholder="ISBN"
 			/>
 			<div className="relative">
 				<input
@@ -132,6 +140,7 @@ const LiteratureForm = ({ oldData, refresh }) => {
 						placeholder="Attach file"
 						className="filestyle"
 						onChange={handleOnChange}
+						// value={data?.attachment}
 					/>
 					<label htmlFor="attachment">
 						<div className="attach-btn d-flex justify-content-around pointer">
@@ -178,7 +187,6 @@ const LiteratureForm = ({ oldData, refresh }) => {
 			<div className="d-flex justify-content-end">
 				<button
 					className="form-btn pointer"
-					data-bs-dismiss="modal"
 					onClick={e => {
 						handleShow();
 						handleSubmit(e);
@@ -187,7 +195,6 @@ const LiteratureForm = ({ oldData, refresh }) => {
 					Update
 				</button>
 			</div>
-			{/* <AddLiteratureModal handleClose={handleClose} show={show} /> */}
 		</div>
 	);
 };
