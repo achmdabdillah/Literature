@@ -18,7 +18,6 @@ const UserRoute = ({ component: Component, ...rest }) => {
 
 const AdminRoute = ({ component: Component, ...rest }) => {
 	const { state } = useContext(AuthContext);
-	// console.log(state)
 	return (
 		<>
 			<Route

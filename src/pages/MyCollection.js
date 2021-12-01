@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import Nav from '../components/Nav';
-import CardPDF from '../components/CardPDF';
+import Nav from '../components/Structure/Nav';
+import CardPDF from '../components/Cards/CardPDF';
 
 import { API } from '../config/api';
 
 const MyCollection = () => {
 	const [data, setData] = useState([]);
-	console.log(data);
 
 	const getData = async () => {
 		try {

@@ -1,9 +1,9 @@
 import React from 'react';
 import { useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
-import Nav from '../components/Nav';
-import Home from '../components/Home';
-import LandingBody from '../components/LandingBody';
+import Nav from '../components/Structure/Nav';
+import Home from '../components/Structure/Home';
+import LandingBody from '../components/Structure/LandingBody';
 
 const Landing = () => {
 	const { state } = useContext(AuthContext);

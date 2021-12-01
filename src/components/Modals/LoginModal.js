@@ -1,10 +1,10 @@
 import { Modal, Button } from 'react-bootstrap';
 import { useHistory } from 'react-router';
 import { useState, useContext } from 'react';
-import { AuthContext } from '../context/AuthContext';
+import { AuthContext } from '../../context/AuthContext';
 import Swal from 'sweetalert2';
 
-import { API } from '../config/api';
+import { API } from '../../config/api';
 
 const LoginModals = ({ handleClose, show, handleShowRegis }) => {
 	const history = useHistory();

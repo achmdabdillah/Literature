@@ -1,17 +1,15 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { useParams, useHistory } from 'react-router';
+import { useParams } from 'react-router';
 import Swal from 'sweetalert2';
-import Nav from '../components/Nav';
+import Nav from '../components/Structure/Nav';
 
 import { API } from '../config/api';
 import downloader from '../tools/Downloader';
 import { AuthContext } from '../context/AuthContext';
+import LiteratureForm from '../components/Modals/LiteratureForm';
 
 const DetailLiteratur = () => {
 	const { state } = useContext(AuthContext);
-
-	const history = useHistory();
-
 	const dateFormatter = inputDate => {
 		let data = new Date(inputDate).toString();
 		const newDate = data.split(' ');
@@ -22,7 +20,6 @@ const DetailLiteratur = () => {
 	const [data, setData] = useState({});
 	const [myCol, setMyCol] = useState([]);
 	const [collectionID, setCollectionID] = useState(null);
-
 	const getData = async () => {
 		try {
 			const response = await API.get(`/literatures/${id}`);
@@ -85,9 +82,13 @@ const DetailLiteratur = () => {
 			alert('Cannot get data');
 		}
 	};
+
 	const deleteCollection = async () => {
 		try {
-			await API.delete(`/collections/${collectionID}`);
+			const response = await API.delete(`/collections/${collectionID}`);
+			if (response.status === 200) {
+				setCollectionID(null);
+			}
 			getCollection();
 		} catch (error) {
 			alert('Cannot get data');
@@ -106,13 +107,19 @@ const DetailLiteratur = () => {
 			<div className="container d-flex justify-content-between mt-3">
 				<div className="preview">
 					<a href={data?.attachment}>
-						<img
-							className="pointer"
-							style={{ borderRadius: 10 }}
-							src={data?.thumbnail}
-							height="450"
-							alt=""
-						/>
+						<div
+							className={
+								data?.status === 'Waiting Approve' ? 'waiting' : data?.status
+							}
+						>
+							<img
+								className="pointer"
+								style={{ borderRadius: 10 }}
+								src={data?.thumbnail}
+								height="450"
+								alt=""
+							/>
+						</div>
 					</a>
 				</div>
 				<div className="d-flex flex-column detail-info w-75 mx-5 avenir-thin">
@@ -155,11 +162,9 @@ const DetailLiteratur = () => {
 					</div>
 				</div>
 				<div>
-					{state.user.id === data?.idUser ? (
-						<></>
-					) : (
+					{state.user.id !== data.idUser && data?.idUser !== undefined ? (
 						<>
-							{myCol.find((item, i) => item.literatures.id === data?.id) ? (
+							{myCol.find(item => item.literatures.id === data?.id) ? (
 								<>
 									<button
 										onClick={deleteCollection}
@@ -189,6 +194,46 @@ const DetailLiteratur = () => {
 										/>
 									</button>
 								</>
+							)}
+						</>
+					) : (
+						<>
+							{data?.status === 'Cancelled' ? (
+								<>
+									<button
+										className="my-collection-btn rounded"
+										data-bs-toggle="modal"
+										data-bs-target="#staticBackdrop"
+									>
+										Edit
+									</button>
+									{/* modal start */}
+									<div
+										className="modal fade"
+										id="staticBackdrop"
+										data-bs-backdrop="static"
+										data-bs-keyboard="false"
+										tabindex="-1"
+										aria-labelledby="staticBackdropLabel"
+										aria-hidden="true"
+									>
+										<div className="modal-dialog w-110">
+											<div className="modal-content">
+												<div class="modal-header">
+													<h5 class="modal-title" id="staticBackdropLabel">
+														Edit literature
+													</h5>
+												</div>
+												<div className="modal-body">
+													<LiteratureForm refresh={getData} oldData={data} />
+												</div>
+											</div>
+										</div>
+									</div>
+									{/* modal ends */}
+								</>
+							) : (
+								<></>
 							)}
 						</>
 					)}

@@ -1,10 +1,9 @@
 import { useState } from 'react';
 import { useHistory } from 'react-router';
 import Swal from 'sweetalert2';
-import Nav from '../components//Nav';
-import AddLiteratureModal from '../components/AddLiteratureModal';
+import Nav from '../components/Structure/Nav';
+import AddLiteratureModal from '../components/Modals/AddLiteratureModal';
 
-import { Formik } from 'formik';
 import { API } from '../config/api';
 
 const AddLiterature = () => {
@@ -23,7 +22,6 @@ const AddLiterature = () => {
 	const handleClose = () => setShow(false);
 	const handleShow = () => setShow(true);
 
-	console.log(data);
 	const [preview, setPreview] = useState('');
 	const [PDFName, setPDFName] = useState(null);
 
@@ -48,52 +46,38 @@ const AddLiterature = () => {
 	};
 
 	const handleSubmit = async () => {
-		if (
-			(!data.title || !data.title,
-			!data.publication_date,
-			!data.pages,
-			!data.isbn,
-			!data.author,
-			!data.attachment,
-			!data.thumbnail)
-		) {
+		try {
+			const config = {
+				headers: {
+					'Content-Type': 'multipart/form-data',
+				},
+			};
+			const formData = new FormData();
+			formData.set('title', data.title);
+			formData.set('publication_date', data.publication_date);
+			formData.set('pages', data.pages);
+			formData.set('ISBN', data.isbn);
+			formData.set('author', data.author);
+			formData.set('attachment', data.attachment);
+			formData.set('thumbnail', data.thumbnail);
+			// Insert data to database here ...
+			const response = await API.post('/literatures', formData, config);
+			if (response?.status === 200) {
+				Swal.fire({
+					icon: 'success',
+					title: 'Success',
+					text: 'Literature added',
+				});
+				history.push('/profile');
+			}
+		} catch (error) {
+			const msg =
+				error.response.data.message || error.response.data.error.message;
 			Swal.fire({
 				icon: 'error',
 				title: 'Oops..',
-				text: 'Please fill all of the input',
+				text: msg,
 			});
-		} else {
-			try {
-				const config = {
-					headers: {
-						'Content-Type': 'multipart/form-data',
-					},
-				};
-				const formData = new FormData();
-				formData.set('title', data.title);
-				formData.set('publication_date', data.publication_date);
-				formData.set('pages', data.pages);
-				formData.set('ISBN', data.isbn);
-				formData.set('author', data.author);
-				formData.set('attachment', data.attachment);
-				formData.set('thumbnail', data.thumbnail);
-				// Insert data trip to database here ...
-				const response = await API.post('/literatures', formData, config);
-				if (response?.status === 200) {
-					Swal.fire({
-						icon: 'success',
-						title: 'Success',
-						text: 'Literature added',
-					});
-					history.push('/profile');
-				}
-			} catch (error) {
-				Swal.fire({
-					icon: 'error',
-					title: 'Oops..',
-					text: 'Literature already exist',
-				});
-			}
 		}
 	};
 

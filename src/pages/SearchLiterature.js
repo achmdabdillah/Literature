@@ -1,9 +1,9 @@
 import React, { useEffect, useState, Suspense } from 'react';
 import { useLocation, useHistory } from 'react-router';
-import Nav from '../components/Nav';
+import Nav from '../components/Structure/Nav';
 import { API } from '../config/api';
 
-const CardPDF = React.lazy(() => import('../components/CardPDF'));
+const CardPDF = React.lazy(() => import('../components/Cards/CardPDF'));
 
 const SearchLiterature = () => {
 	const history = useHistory();
@@ -46,7 +46,6 @@ const SearchLiterature = () => {
 			[e.target.name]: e.target.value,
 		}));
 	};
-	console.log(input);
 
 	useEffect(() => {
 		getData();

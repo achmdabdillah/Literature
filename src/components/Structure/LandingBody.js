@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import LoginModals from './LoginModal';
-import RegisModals from './RegisModal';
+import LoginModals from '../Modals/LoginModal';
+import RegisModals from '../Modals/RegisModal';
 
 const LandingNotLogin = () => {
 	// Login Modals

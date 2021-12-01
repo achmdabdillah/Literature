@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
-import CardPDF from '../components/CardPDF';
-import MyNav from '../components/Nav';
+import CardPDF from '../components/Cards/CardPDF';
+import MyNav from '../components/Structure/Nav';
 import Swal from 'sweetalert2';
 import { Nav } from 'react-bootstrap';
 
@@ -71,6 +71,7 @@ const Profile = () => {
 	};
 
 	const [status, setStatus] = useState('Approved');
+	const dataFilterred = data?.filter(item => item.status === status);
 
 	useEffect(() => {
 		getUser();
@@ -151,38 +152,38 @@ const Profile = () => {
 					My Literature
 				</h1>
 
-				{data.length !== 0 ? (
+				<Nav
+					className="mb-3"
+					variant="tabs"
+					defaultActiveKey="Approved"
+					onSelect={selectedKey => setStatus(selectedKey)}
+				>
+					<Nav.Item>
+						<Nav.Link eventKey="Approved">Approved</Nav.Link>
+					</Nav.Item>
+					<Nav.Item>
+						<Nav.Link eventKey="Waiting Approve">Waiting Approve</Nav.Link>
+					</Nav.Item>
+					<Nav.Item>
+						<Nav.Link eventKey="Cancelled">Cancelled</Nav.Link>
+					</Nav.Item>
+				</Nav>
+				{dataFilterred.length !== 0 ? (
 					<>
-						<Nav
-							className="mb-3"
-							variant="tabs"
-							defaultActiveKey="Approved"
-							onSelect={selectedKey => setStatus(selectedKey)}
-						>
-							<Nav.Item>
-								<Nav.Link eventKey="Approved">Approved</Nav.Link>
-							</Nav.Item>
-							<Nav.Item>
-								<Nav.Link eventKey="Waiting Approve">Waiting Approve</Nav.Link>
-							</Nav.Item>
-							<Nav.Item>
-								<Nav.Link eventKey="Cancelled">Cancelled</Nav.Link>
-							</Nav.Item>
-						</Nav>
 						<div className="items">
-							{data
-								?.filter(item => item.status === status)
-								.map(item => (
-									<CardPDF item={item} />
-								))}
+							{dataFilterred.map(item => (
+								<CardPDF item={item} />
+							))}
 						</div>
 					</>
 				) : (
-					<div className="no-data d-flex flex-column">
-						<img src="/assets/no-data.png" height="400" alt="" />
+					<>
+						<div className="no-data d-flex flex-column">
+							<img src="/assets/no-data.png" height="400" alt="" />
 
-						<h1 className="my-5">No Literature Added</h1>
-					</div>
+							<h1 className="my-5">No {status} Literature Found</h1>
+						</div>
+					</>
 				)}
 			</div>
 		</>

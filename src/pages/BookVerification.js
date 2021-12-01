@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Nav from '../components/Nav';
+import Nav from '../components/Structure/Nav';
 
 import { API } from '../config/api';
 

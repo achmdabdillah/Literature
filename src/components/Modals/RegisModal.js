@@ -1,10 +1,10 @@
 import { Modal } from 'react-bootstrap';
 import { useState, useContext } from 'react';
-import { AuthContext } from '../context/AuthContext';
+import { AuthContext } from '../../context/AuthContext';
 import Swal from 'sweetalert2';
 
 // IMPORT API
-import { API } from '../config/api';
+import { API } from '../../config/api';
 
 const RegisModals = ({ handleClose, show, handleShowLogin }) => {
 	const { dispatch } = useContext(AuthContext);
@@ -38,7 +38,6 @@ const RegisModals = ({ handleClose, show, handleShowLogin }) => {
 			};
 			// Data body
 			const body = JSON.stringify(form);
-			console.log(body);
 			// Insert data user to database
 			const response = await API.post('/register', body, config);
 			// Notification
