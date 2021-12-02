@@ -1,9 +1,8 @@
-import React, { useEffect, useState, Suspense } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useLocation, useHistory } from 'react-router';
 import Nav from '../components/Structure/Nav';
 import { API } from '../config/api';
-
-const CardPDF = React.lazy(() => import('../components/Cards/CardPDF'));
+import CardPDF from '../components/Cards/CardPDF';
 
 const SearchLiterature = () => {
 	const history = useHistory();
@@ -50,35 +49,35 @@ const SearchLiterature = () => {
 	useEffect(() => {
 		getData();
 	}, []);
+	console.log(data);
 
 	const [yearExist, setYearExist] = useState(false);
 
-	const handleSearch = () => {
+	const handleSearch = e => {
 		if (search.includes('title')) {
 			if (!input.title) {
 				if (!search.includes('year')) {
-					history.go();
+					// history.go();
 				}
 				if (input.year) {
 					history.push(`/search${searchAll[0]}&public_year=${input.year}`);
-					history.go();
+					// history.go();
 				}
-				if (!input.title && !input.year) history.push('/search?title=');
-				history.go();
+				if (!input.title && !input.year) {
+					history.push('/search?title=');
+					// history.go();
+				}
 			}
 			if (input.title) {
 				history.push(`/search?title=${input.title}`);
-				history.go();
+				// history.go();
 			}
 		}
 		if (search.includes('year')) {
-			if (!input.year && input.title) {
-				history.push(`/search?title=${input.title}`);
-				history.go();
-			}
 			if (!search.includes(input.year)) {
 				history.push(`/search${searchAll[0]}&public_year=${input.year}`);
-				history.go();
+				// getData()
+				// history.go();
 			}
 		}
 	};
@@ -119,24 +118,26 @@ const SearchLiterature = () => {
 							name="year"
 							onChange={e => {
 								handleOnChange(e);
+								getData();
 								setYearExist(true);
 							}}
 						>
 							<option disabled selected={true}>
 								Choose year
 							</option>
-							{years.map(year => (
-								<option value={year}>{year}</option>
-							))}
+							{years
+								.sort()
+								.reverse()
+								.map(year => (
+									<option value={year}>{year}</option>
+								))}
 						</select>
 					</div>
 					{dataFilterred.length !== 0 ? (
 						<>
 							<div className="items">
 								{dataFilterred.map(item => (
-									<Suspense fallback={<div>Loading...</div>}>
-										<CardPDF item={item} />
-									</Suspense>
+									<CardPDF item={item} />
 								))}
 							</div>
 						</>

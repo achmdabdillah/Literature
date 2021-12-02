@@ -23,7 +23,7 @@ const LandingNotLogin = () => {
 					Sign-up and receive unlimited accesss to all of your literatur - share
 					your literature.
 				</p>
-				<div class="d-flex flex-row  w-75 justify-content-between">
+				<div class="d-flex flex-row w-75 justify-content-between">
 					<button className="register-btn" onClick={handleShow1}>
 						<p className="avenir-thin">Sign Up</p>
 					</button>

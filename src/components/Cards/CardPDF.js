@@ -1,12 +1,13 @@
 import React from 'react';
 import { useHistory } from 'react-router';
 
-const CardPDF = ({ item }) => {
+const CardPDF = ({ item, getData }) => {
 	const history = useHistory();
 
 	const handleDetail = () => {
 		history.push(`/literatures/${item?.id}`);
 	};
+
 	return (
 		<div onClick={handleDetail} className="item pointer">
 			<div className="pdf-preview">

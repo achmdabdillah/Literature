@@ -170,7 +170,7 @@ const Profile = () => {
 				</Nav>
 				{dataFilterred.length !== 0 ? (
 					<>
-						<div className="items">
+						<div className="items justify-content-center">
 							{dataFilterred.map(item => (
 								<CardPDF item={item} />
 							))}

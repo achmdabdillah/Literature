@@ -518,6 +518,16 @@ option {
 	border: transparent 1px solid;
 }
 
+.p-info-card input {
+	padding: 0;
+	padding-left: 12px;
+	background-color: #d2d2d240;
+	border: 2px solid #bcbcbc;
+	border-radius: 5px;
+	color: #fff;
+	font-size: 18px !important;
+}
+
 .nav-tabs {
 	border: none;
 }
@@ -544,7 +554,6 @@ option {
 .nav-tabs .nav-link.active {
 	background-color: transparent;
 	color: #af2e1c;
-	/* border-bottom: solid 2px #af2e1c !important; */
 }
 
 .nav-tabs .nav-link:hover {

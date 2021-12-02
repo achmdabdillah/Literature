@@ -122,7 +122,7 @@ const DetailLiteratur = () => {
 			<Nav />
 			<div className="container d-flex justify-content-between mt-3">
 				<div className="preview">
-					<a href={data?.attachment}>
+					<a href={data?.attachment} target="_blank" rel="referrer">
 						<div
 							className={
 								data?.status === 'Waiting Approve' ? 'waiting' : data?.status
