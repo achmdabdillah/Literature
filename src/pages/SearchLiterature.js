@@ -49,41 +49,51 @@ const SearchLiterature = () => {
 	useEffect(() => {
 		getData();
 	}, []);
-	console.log(data);
 
 	const [yearExist, setYearExist] = useState(false);
 
-	const handleSearch = e => {
-		if (search.includes('title')) {
-			if (!input.title) {
-				if (!search.includes('year')) {
-					// history.go();
-				}
-				if (input.year) {
-					history.push(`/search${searchAll[0]}&public_year=${input.year}`);
-					// history.go();
-				}
-				if (!input.title && !input.year) {
-					history.push('/search?title=');
-					// history.go();
-				}
-			}
-			if (input.title) {
-				history.push(`/search?title=${input.title}`);
-				// history.go();
-			}
+	const handleSearch = () => {
+		if (input.title) {
+			history.push(`/search?title=${input.title}`);
+			getData();
 		}
-		if (search.includes('year')) {
-			if (!search.includes(input.year)) {
-				history.push(`/search${searchAll[0]}&public_year=${input.year}`);
-				// getData()
-				// history.go();
-			}
+		if (input.year) {
+			history.push(`/search${searchAll[0]}&public_year=${input.year}`);
 		}
 	};
+	console.log(data[0]);
+	// const handleSearch = e => {
+	// 	if (search.includes('title')) {
+	// 		if (!input.title) {
+	// 			if (!search.includes('year')) {
+	// 				// history.go();
+	// 			}
+	// 			if (input.year) {
+	// 				history.push(`/search${searchAll[0]}&public_year=${input.year}`);
+	// 				// history.go();
+	// 			}
+	// 			if (!input.title && !input.year) {
+	// 				history.push('/search?title=');
+	// 				// history.go();
+	// 			}
+	// 		}
+	// 		if (input.title) {
+	// 			history.push(`/search?title=${input.title}`);
+	// 			// history.go();
+	// 		}
+	// 	}
+	// 	if (search.includes('year')) {
+	// 		if (!search.includes(input.year)) {
+	// 			history.push(`/search${searchAll[0]}&public_year=${input.year}`);
+	// 			// getData()
+	// 			// history.go();
+	// 		}
+	// 	}
+	// };
 
 	if (yearExist) {
 		handleSearch();
+		getData();
 		setYearExist(false);
 	}
 
@@ -104,7 +114,7 @@ const SearchLiterature = () => {
 							className="ms-2 search-btn rounded"
 							type="button"
 							id="button-addon2"
-							onClick={handleSearch}
+							onClick={() => handleSearch()}
 						>
 							<img src="/assets/lup.png" height="30px" alt="" />
 						</button>
@@ -122,7 +132,7 @@ const SearchLiterature = () => {
 								setYearExist(true);
 							}}
 						>
-							<option disabled selected={true}>
+							<option disabled defaultValue>
 								Choose year
 							</option>
 							{years
