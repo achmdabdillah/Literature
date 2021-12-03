@@ -14,6 +14,11 @@ const SearchLiterature = () => {
 	const searchAll = search.split('&');
 	const noDataTitle = searchAll[0].split('=')[1];
 
+	const [input, setInput] = useState({
+		title: '',
+		year: '',
+	});
+
 	const getData = async () => {
 		try {
 			const response1 = await API.get(`/literatures${search}`);
@@ -34,11 +39,6 @@ const SearchLiterature = () => {
 	allYear.map(item => years.push(item?.public_year));
 	years = [...new Set(years)];
 
-	const [input, setInput] = useState({
-		title: '',
-		year: '',
-	});
-
 	const handleOnChange = e => {
 		setInput(prevState => ({
 			...prevState,
@@ -46,57 +46,33 @@ const SearchLiterature = () => {
 		}));
 	};
 
-	useEffect(() => {
-		getData();
-	}, []);
-
 	const [yearExist, setYearExist] = useState(false);
 
 	const handleSearch = () => {
-		if (input.title) {
-			history.push(`/search?title=${input.title}`);
-			getData();
-		}
-		if (input.year) {
-			history.push(`/search${searchAll[0]}&public_year=${input.year}`);
+		if (!search.includes('year') || search.includes('year')) {
+			if (input.title) {
+				history.push(`/search?title=${input.title}`);
+				alert('1');
+			}
+			if (input.year) {
+				history.push(`/search${searchAll[0]}&public_year=${input.year}`);
+				alert('2');
+			}
+			if (!input.title && !input.year) {
+				history.push(`/search?title=`);
+				alert('3');
+			}
 		}
 	};
-	console.log(data[0]);
-	// const handleSearch = e => {
-	// 	if (search.includes('title')) {
-	// 		if (!input.title) {
-	// 			if (!search.includes('year')) {
-	// 				// history.go();
-	// 			}
-	// 			if (input.year) {
-	// 				history.push(`/search${searchAll[0]}&public_year=${input.year}`);
-	// 				// history.go();
-	// 			}
-	// 			if (!input.title && !input.year) {
-	// 				history.push('/search?title=');
-	// 				// history.go();
-	// 			}
-	// 		}
-	// 		if (input.title) {
-	// 			history.push(`/search?title=${input.title}`);
-	// 			// history.go();
-	// 		}
-	// 	}
-	// 	if (search.includes('year')) {
-	// 		if (!search.includes(input.year)) {
-	// 			history.push(`/search${searchAll[0]}&public_year=${input.year}`);
-	// 			// getData()
-	// 			// history.go();
-	// 		}
-	// 	}
-	// };
-
 	if (yearExist) {
 		handleSearch();
-		getData();
 		setYearExist(false);
 	}
 
+	useEffect(() => {
+		getData();
+		setInput({ title: '', year: '' });
+	}, [search]);
 	return (
 		<>
 			<Nav />
@@ -114,7 +90,7 @@ const SearchLiterature = () => {
 							className="ms-2 search-btn rounded"
 							type="button"
 							id="button-addon2"
-							onClick={() => handleSearch()}
+							onClick={handleSearch}
 						>
 							<img src="/assets/lup.png" height="30px" alt="" />
 						</button>
@@ -128,18 +104,17 @@ const SearchLiterature = () => {
 							name="year"
 							onChange={e => {
 								handleOnChange(e);
-								getData();
 								setYearExist(true);
 							}}
 						>
-							<option disabled defaultValue>
-								Choose year
-							</option>
+							<option value=" ">All year</option>
 							{years
 								.sort()
 								.reverse()
 								.map(year => (
-									<option value={year}>{year}</option>
+									<option key={year} value={year}>
+										{year}
+									</option>
 								))}
 						</select>
 					</div>
@@ -147,7 +122,7 @@ const SearchLiterature = () => {
 						<>
 							<div className="items">
 								{dataFilterred.map(item => (
-									<CardPDF item={item} />
+									<CardPDF key={item?.id} item={item} />
 								))}
 							</div>
 						</>
