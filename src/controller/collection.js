@@ -1,31 +1,28 @@
 const { collections, literatures, users } = require('../../models');
 const sequelize = require('../database/connection');
+const { Op } = require('sequelize');
 
-exports.addCollection = async (req, res) => {
+exports.createCollection = async (req, res) => {
 	try {
 		const { idUser } = req.user;
-		const { idLiterature } = req.body;
 
-		const collectionExist = await collections.findOne({
+		const isExist = await collections.findOne({
 			where: {
-				idUser,
-				idLiterature,
+				[Op.and]: [{ idUser }, { collectionName: req.body.collectionName }],
 			},
 		});
 
-		if (collectionExist) {
-			res.status(400).send({
-				status: 'failed',
-				messages: 'literature already added',
+		if (isExist) {
+			return res.status(400).send({
+				error: {
+					message: 'Collection already exist!',
+				},
 			});
 		}
-		let newCollections;
-		if (!collectionExist) {
-			newCollections = await collections.create({
-				idUser,
-				idLiterature,
-			});
-		}
+		const newCollections = await collections.create({
+			...req.body,
+			idUser,
+		});
 
 		let showCollection = await collections.findOne({
 			where: {
@@ -38,14 +35,13 @@ exports.addCollection = async (req, res) => {
 
 		res.status(200).send({
 			status: 'success',
-			messages: 'transaction succesfully added',
 			data: showCollection,
 		});
 	} catch (error) {
 		console.log(error);
 		res.status(500).send({
 			status: 'failed',
-			message: 'Server Error',
+			message: 'server error',
 		});
 	}
 };
@@ -68,7 +64,6 @@ exports.getCollections = async (req, res) => {
 						],
 					},
 				},
-
 				{
 					model: literatures,
 					as: 'literatures',
@@ -116,30 +111,9 @@ exports.getCollection = async (req, res) => {
 			where: {
 				idUser,
 			},
-			include: {
-				model: literatures,
-				as: 'literatures',
-				attributes: {
-					exclude: ['createdAt', 'updatedAt'],
-				},
-				attributes: {
-					exclude: ['createdAt', 'updatedAt', 'idUser'],
-					include: [
-						[
-							sequelize.fn('YEAR', sequelize.col('publication_date')),
-							'public_year',
-						],
-					],
-				},
-			},
 			attributes: {
-				exclude: ['updatedAt', 'idLiterature'],
+				exclude: ['updatedAt', 'createdAt'],
 			},
-		});
-		collection = JSON.parse(JSON.stringify(collection));
-		collection.map(item => {
-			item.literatures.attachment = `${process.env.BASE_URL}/uploads/file/${item.literatures.attachment}`;
-			item.literatures.thumbnail = `${process.env.BASE_URL}/uploads/thumbnail/${item.literatures.thumbnail}`;
 		});
 		res.send({
 			status: 'success',
@@ -178,6 +152,7 @@ exports.getCollectionID = async (req, res) => {
 			col,
 		});
 	} catch (error) {
+		console.log(error);
 		res.send({
 			status: 'failed',
 			message: 'Internal server error',

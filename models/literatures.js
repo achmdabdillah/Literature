@@ -14,8 +14,8 @@ module.exports = (sequelize, DataTypes) => {
 					name: 'idUser',
 				},
 			});
-			literatures.hasMany(models.collections, {
-				as: 'collections',
+			literatures.hasMany(models.collection_literature, {
+				as: 'collection_literature',
 				foreignKey: {
 					name: 'idLiterature',
 				},

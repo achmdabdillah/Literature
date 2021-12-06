@@ -38,16 +38,12 @@ exports.addLiterature = async (req, res) => {
 		}
 
 		const attachment = req.files.attachment[0].filename;
-		const thumbnail = req.files.thumbnail[0].filename;
 
-		// const attachment = req.file.filename;
-		// console.log(attachment);
 		// create literature
 		const newLiterature = await literatures.create({
 			...req.body,
 			idUser,
 			attachment,
-			thumbnail,
 			status: 'Waiting Approve',
 		});
 
@@ -141,7 +137,6 @@ exports.getLiteratures = async (req, res) => {
 		data = JSON.parse(JSON.stringify(data));
 
 		data.map(item => {
-			item.thumbnail = `${process.env.BASE_URL}/uploads/thumbnail/${item.thumbnail}`;
 			item.attachment = `${process.env.BASE_URL}/uploads/file/${item.attachment}`;
 		});
 
@@ -170,7 +165,6 @@ exports.getLiterature = async (req, res) => {
 				exclude: ['createdAt', 'updatedAt'],
 			},
 		});
-		data.attachment = `${process.env.BASE_URL}/uploads/file/${data.attachment}`;
 		data.thumbnail = `${process.env.BASE_URL}/uploads/thumbnail/${data.thumbnail}`;
 
 		res.send({
@@ -211,11 +205,6 @@ exports.getUserLiterature = async (req, res) => {
 				],
 			},
 		});
-		literature = JSON.parse(JSON.stringify(literature));
-		literature.map(
-			item =>
-				(item.thumbnail = `${process.env.BASE_URL}/uploads/thumbnail/${item.thumbnail}`)
-		);
 		res.send({
 			status: 'success',
 			literature,

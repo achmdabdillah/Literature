@@ -14,10 +14,10 @@ module.exports = (sequelize, DataTypes) => {
 					name: 'idUser',
 				},
 			});
-			collections.belongsTo(models.literatures, {
-				as: 'literatures',
+			collections.hasMany(models.collection_literature, {
+				as: 'collection_literature',
 				foreignKey: {
-					name: 'idLiterature',
+					name: 'idCollection',
 				},
 			});
 		}
@@ -25,7 +25,7 @@ module.exports = (sequelize, DataTypes) => {
 	collections.init(
 		{
 			idUser: DataTypes.INTEGER,
-			idLiterature: DataTypes.INTEGER,
+			collectionName: DataTypes.STRING,
 		},
 		{
 			sequelize,

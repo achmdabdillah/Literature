@@ -1,24 +1,30 @@
 'use strict';
 module.exports = {
 	up: async (queryInterface, Sequelize) => {
-		await queryInterface.createTable('collections', {
+		await queryInterface.createTable('collection_literatures', {
 			id: {
 				allowNull: false,
 				autoIncrement: true,
 				primaryKey: true,
 				type: Sequelize.INTEGER,
 			},
-			idUser: {
+			idLiterature: {
 				type: Sequelize.INTEGER,
 				references: {
-					model: 'users',
+					model: 'literatures',
 					key: 'id',
 				},
 				onDelete: 'CASCADE',
 				onUpdate: 'CASCADE',
 			},
-			collectionName: {
-				type: Sequelize.STRING,
+			idCollection: {
+				type: Sequelize.INTEGER,
+				references: {
+					model: 'collections',
+					key: 'id',
+				},
+				onDelete: 'CASCADE',
+				onUpdate: 'CASCADE',
 			},
 			createdAt: {
 				allowNull: false,
@@ -31,6 +37,6 @@ module.exports = {
 		});
 	},
 	down: async (queryInterface, Sequelize) => {
-		await queryInterface.dropTable('collections');
+		await queryInterface.dropTable('collection_literatures');
 	},
 };
