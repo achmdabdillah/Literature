@@ -3,6 +3,7 @@ import { useHistory } from 'react-router';
 import Swal from 'sweetalert2';
 import Nav from '../components/Structure/Nav';
 import AddLiteratureModal from '../components/Modals/AddLiteratureModal';
+import { Document, Page } from 'react-pdf/dist/esm/entry.webpack';
 
 import { API } from '../config/api';
 
@@ -15,7 +16,6 @@ const AddLiterature = () => {
 		isbn: '',
 		author: '',
 		attachment: '',
-		thumbnail: '',
 	});
 
 	const [show, setShow] = useState(false);
@@ -36,12 +36,7 @@ const AddLiterature = () => {
 			if (fileList[0].type === 'application/pdf') {
 				setPDFName(fileList[0].name);
 			}
-			if (
-				fileList[0].type === 'image/jpeg' ||
-				fileList[0].type === 'image/png'
-			) {
-				setPreview(URL.createObjectURL(fileList[0]));
-			}
+			setPreview(URL.createObjectURL(fileList[0]));
 		}
 	};
 
@@ -59,7 +54,6 @@ const AddLiterature = () => {
 			formData.set('ISBN', data.isbn);
 			formData.set('author', data.author);
 			formData.set('attachment', data.attachment);
-			formData.set('thumbnail', data.thumbnail);
 			// Insert data to database here ...
 			const response = await API.post('/literatures', formData, config);
 			if (response?.status === 200) {
@@ -178,30 +172,12 @@ const AddLiterature = () => {
 								</div>
 							</label>
 						</div>
-						<div className="mt-2 mb-4">
-							<input
-								type="file"
-								id="thumbnail"
-								placeholder="Attach file"
-								className="filestyle"
-								onChange={handleOnChange}
-							/>
-							<label htmlFor="thumbnail">
-								<div className="attach-btn d-flex justify-content-around pointer">
-									<p className="avenir pt-2 w-50">Attach Thumbnail</p>
-									<img
-										src="/assets/paperclip.png"
-										height="30"
-										alt=""
-										className="ms-5 mt-2"
-									/>
-								</div>
-							</label>
-						</div>
 					</div>
 					{preview ? (
-						<div className="box-lg">
-							<img src={preview} alt="preview" className="box-lg" />
+						<div className="ms-5 mt-3 d-flex">
+							<Document file={preview}>
+								<Page pageNumber={1} />
+							</Document>
 						</div>
 					) : (
 						<></>

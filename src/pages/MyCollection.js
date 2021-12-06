@@ -119,15 +119,26 @@ const MyCollection = () => {
 					{/* modal ends */}
 				</div>
 				<div>
-					{data?.map((item, i) => (
-						<h1
-							key={i}
-							className="pointer"
-							onClick={() => handleDetail(item?.id)}
-						>
-							{item.collectionName}
-						</h1>
-					))}
+					{data?.length !== 0 ? (
+						<>
+							{data?.map((item, i) => (
+								<h1
+									key={i}
+									className="pointer"
+									onClick={() => handleDetail(item?.id)}
+								>
+									{item.collectionName}
+								</h1>
+							))}
+						</>
+					) : (
+						<>
+							<div className="w-100 d-flex flex-column justify-content-center">
+								<h1 className="mx-auto my-5">No Collection found</h1>
+								<h3 className="mx-auto">Start creating your collection</h3>
+							</div>
+						</>
+					)}
 				</div>
 			</div>
 		</>

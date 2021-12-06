@@ -3,9 +3,21 @@ import { useParams, useHistory } from 'react-router';
 import Swal from 'sweetalert2';
 import Nav from '../components/Structure/Nav';
 
+import { Document, Page } from 'react-pdf/dist/esm/entry.webpack';
+
 import { API } from '../config/api';
 import downloader from '../tools/Downloader';
 import { AuthContext } from '../context/AuthContext';
+
+function PdfViewer({ attachment }) {
+	return (
+		<div className="detail-pdf">
+			<Document file={attachment}>
+				<Page pageNumber={1} />
+			</Document>
+		</div>
+	);
+}
 
 const DetailLiteratur = () => {
 	const history = useHistory();
@@ -135,7 +147,8 @@ const DetailLiteratur = () => {
 			<Nav />
 			<div className="container d-flex justify-content-between mt-3">
 				<div className="preview">
-					<a href={data?.attachment} target="_blank" rel="noreferrer">
+					<PdfViewer attachment={data?.attachment} />
+					{/* <a href={data?.attachment} target="_blank" rel="noreferrer">
 						<div
 							className={
 								data?.status === 'Waiting Approve' ? 'waiting' : data?.status
@@ -149,7 +162,7 @@ const DetailLiteratur = () => {
 								alt=""
 							/>
 						</div>
-					</a>
+					</a> */}
 				</div>
 				<div className="d-flex flex-column detail-info w-75 mx-5 avenir-thin">
 					<div className="mb-5">
