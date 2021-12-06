@@ -37,7 +37,7 @@ exports.addLiterature = async (req, res) => {
 			});
 		}
 
-		const attachment = req.files.attachment[0].filename;
+		const attachment = req.file.filename;
 
 		// create literature
 		const newLiterature = await literatures.create({
@@ -165,7 +165,7 @@ exports.getLiterature = async (req, res) => {
 				exclude: ['createdAt', 'updatedAt'],
 			},
 		});
-		data.thumbnail = `${process.env.BASE_URL}/uploads/thumbnail/${data.thumbnail}`;
+		data.attachment = `${process.env.BASE_URL}/uploads/file/${data.attachment}`;
 
 		res.send({
 			status: 'success',
@@ -205,6 +205,13 @@ exports.getUserLiterature = async (req, res) => {
 				],
 			},
 		});
+
+		literature = JSON.parse(JSON.stringify(literature));
+		literature.map(
+			item =>
+				(item.attachment = `${process.env.BASE_URL}/uploads/file/${item.attachment}`)
+		);
+
 		res.send({
 			status: 'success',
 			literature,

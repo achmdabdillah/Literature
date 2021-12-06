@@ -32,7 +32,6 @@ module.exports = (sequelize, DataTypes) => {
 			author: DataTypes.STRING,
 			attachment: DataTypes.STRING,
 			status: DataTypes.STRING,
-			thumbnail: DataTypes.STRING,
 		},
 		{
 			sequelize,
