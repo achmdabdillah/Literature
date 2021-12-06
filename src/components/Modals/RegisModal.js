@@ -132,7 +132,7 @@ const RegisModals = ({ handleClose, show, handleShowLogin }) => {
 							onChange={handleOnChange}
 						/>
 					</div>
-					<div class="absolute">
+					<div className="absolute">
 						<div className="modal-input gender mb-3">
 							<select
 								name="gender"

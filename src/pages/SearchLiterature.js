@@ -52,15 +52,12 @@ const SearchLiterature = () => {
 		if (!search.includes('year') || search.includes('year')) {
 			if (input.title) {
 				history.push(`/search?title=${input.title}`);
-				alert('1');
 			}
 			if (input.year) {
 				history.push(`/search${searchAll[0]}&public_year=${input.year}`);
-				alert('2');
 			}
 			if (!input.title && !input.year) {
 				history.push(`/search?title=`);
-				alert('3');
 			}
 		}
 	};

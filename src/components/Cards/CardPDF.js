@@ -1,7 +1,19 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useHistory } from 'react-router';
 
-const CardPDF = ({ item, getData }) => {
+import { Document, Page } from 'react-pdf/dist/esm/entry.webpack';
+
+function PdfViewer({ attachment }) {
+	return (
+		<div>
+			<Document file={attachment}>
+				<Page pageNumber={1} />
+			</Document>
+		</div>
+	);
+}
+
+const CardPDF = ({ item }) => {
 	const history = useHistory();
 
 	const handleDetail = () => {
@@ -11,7 +23,8 @@ const CardPDF = ({ item, getData }) => {
 	return (
 		<div onClick={handleDetail} className="item pointer">
 			<div className="pdf-preview">
-				<img src={item.thumbnail} alt="" />
+				<PdfViewer attachment={item?.attachment} />
+				{/* <img src={item.thumbnail} alt="" /> */}
 			</div>
 			<div className="pdf-title timesNewRoman mb-3" style={{ fontSize: 24 }}>
 				{item?.title}

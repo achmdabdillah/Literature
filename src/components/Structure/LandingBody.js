@@ -15,7 +15,7 @@ const LandingNotLogin = () => {
 
 	return (
 		<div className="d-flex flex-row justify-content-around container">
-			<div class="landing-body-start">
+			<div className="landing-body-start">
 				<p className="timesNewRoman">
 					source <span className="italic">of</span> intelligent
 				</p>
@@ -23,7 +23,7 @@ const LandingNotLogin = () => {
 					Sign-up and receive unlimited accesss to all of your literatur - share
 					your literature.
 				</p>
-				<div class="d-flex flex-row w-75 justify-content-between">
+				<div className="d-flex flex-row w-75 justify-content-between">
 					<button className="register-btn" onClick={handleShow1}>
 						<p className="avenir-thin">Sign Up</p>
 					</button>

@@ -1,4 +1,9 @@
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import {
+	BrowserRouter as Router,
+	Route,
+	Switch,
+	Redirect,
+} from 'react-router-dom';
 import Loader from 'react-loader-spinner';
 
 // import pages
@@ -9,6 +14,8 @@ import Profile from './pages/Profile';
 import BookVerification from './pages/BookVerification';
 import DetailLiteratur from './pages/DetailLiteratur';
 import SearchLiterature from './pages/SearchLiterature';
+import DetailCollection from './pages/DetailCollection';
+import NotFound from './pages/NotFound';
 
 import { AdminRoute, UserRoute } from './components/Route/PrivateRoute';
 import { useContext, useEffect } from 'react';
@@ -94,6 +101,11 @@ function App() {
 							component={AddLiterature}
 						/>
 						<UserRoute exact path="/collection" component={MyCollection} />
+						<UserRoute
+							exact
+							path="/collection/:id"
+							component={DetailCollection}
+						/>
 						<UserRoute exact path="/profile" component={Profile} />
 						<AdminRoute
 							exact
