@@ -124,7 +124,7 @@ const MyCollection = () => {
 							{data?.map((item, i) => (
 								<h1
 									key={i}
-									className="pointer"
+									className="pointer collection-title"
 									onClick={() => handleDetail(item?.id)}
 								>
 									{item.collectionName}

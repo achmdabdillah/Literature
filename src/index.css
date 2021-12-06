@@ -492,6 +492,19 @@ option {
 	width: 220px;
 }
 
+.add-btn {
+	border: none;
+	border-radius: 5px;
+	padding: 0 10px;
+	background-color: #af2e1c;
+	color: whitesmoke;
+	font-weight: bold;
+}
+
+/* detail end */
+
+/* Collection start */
+
 .create-collection-btn {
 	padding: 10px;
 	border-radius: 5px;
@@ -529,7 +542,7 @@ option {
 	background-color: #dd3c27;
 	position: absolute;
 	top: 5px;
-	right: 69px;
+	right: 39px;
 	outline: none;
 
 	display: flex;
@@ -537,7 +550,22 @@ option {
 	align-items: center;
 }
 
-/* detail end */
+.collection-title {
+	display: flex;
+	height: 40px;
+	font-size: 30px;
+	transition: all 0.2s ease;
+}
+
+.collection-title:nth-child(odd) {
+	background-color: #383838;
+}
+
+.collection-title:hover {
+	color: #af2e1c;
+}
+
+/* Collection end */
 
 /* PROFILE */
 
