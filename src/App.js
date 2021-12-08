@@ -1,9 +1,4 @@
-import {
-	BrowserRouter as Router,
-	Route,
-	Switch,
-	Redirect,
-} from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Loader from 'react-loader-spinner';
 
 // import pages
@@ -15,7 +10,6 @@ import BookVerification from './pages/BookVerification';
 import DetailLiteratur from './pages/DetailLiteratur';
 import SearchLiterature from './pages/SearchLiterature';
 import DetailCollection from './pages/DetailCollection';
-import NotFound from './pages/NotFound';
 
 import { AdminRoute, UserRoute } from './components/Route/PrivateRoute';
 import { useContext, useEffect } from 'react';

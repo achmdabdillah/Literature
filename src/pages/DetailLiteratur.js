@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { useParams, useHistory } from 'react-router';
 import Swal from 'sweetalert2';
 import Nav from '../components/Structure/Nav';
+import { AuthContext } from '../context/AuthContext';
 
 import { Document, Page } from 'react-pdf/dist/esm/entry.webpack';
 
@@ -20,6 +21,7 @@ function PdfViewer({ attachment }) {
 
 const DetailLiteratur = () => {
 	const history = useHistory();
+	const { state } = useContext(AuthContext);
 
 	const dateFormatter = inputDate => {
 		let data = new Date(inputDate).toString();
@@ -136,76 +138,82 @@ const DetailLiteratur = () => {
 						</button>
 					</div>
 				</div>
-				<div className="w-25 d-flex flex-column mt-0">
-					<button
-						type="button"
-						className="create-collection-btn"
-						data-bs-toggle="modal"
-						data-bs-target="#exampleModal"
-					>
-						Add To Collection
-					</button>
-					{/* Modal Start */}
-					<div
-						className="modal fade"
-						id="exampleModal"
-						tabIndex="-1"
-						aria-labelledby="exampleModalLabel"
-						aria-hidden="true"
-					>
-						<div className="modal-dialog modal-dialog-centered">
-							<div className="modal-content">
-								<div className="modal-header">
-									<h5
-										className="modal-title fs-2 mx-auto"
-										id="exampleModalLabel"
-									>
-										Your Collection
-									</h5>
-								</div>
-								<div className="modal-body">
-									<div className="d-flex flex-column align-items-center">
-										{myCol.length !== 0 ? (
-											<>
-												{myCol.map(item => (
-													<div className="d-flex w-100 justify-content-between my-2">
-														<h4 className="w-75">{item.collectionName}</h4>
-														<button
-															data-bs-dismiss="modal"
-															className="add-btn"
-															onClick={() => handleAddCollection(item?.id)}
-														>
-															<i class="fas fa-plus"></i>
-														</button>
-													</div>
-												))}
-											</>
-										) : (
-											<>
-												<div className="w-100 d-flex flex-column justify-content-center">
-													<h4 className="mx-auto my-3">No Collection found</h4>
-													<h5 className="mx-auto">
-														Start creating your collection{' '}
-														<span
-															className="pointer"
-															data-bs-dismiss="modal"
-															onClick={() => history.push('/collection')}
-															style={{ color: '#af2e1c' }}
-														>
-															here
-														</span>
-													</h5>
-												</div>
-											</>
-										)}
+				{state.user.id !== data.idUser && data?.idUser !== undefined ? (
+					<div className="w-25 d-flex flex-column mt-0">
+						<button
+							type="button"
+							className="create-collection-btn"
+							data-bs-toggle="modal"
+							data-bs-target="#exampleModal"
+						>
+							Add To Collection
+						</button>
+						{/* Modal Start */}
+						<div
+							className="modal fade"
+							id="exampleModal"
+							tabIndex="-1"
+							aria-labelledby="exampleModalLabel"
+							aria-hidden="true"
+						>
+							<div className="modal-dialog modal-dialog-centered">
+								<div className="modal-content">
+									<div className="modal-header">
+										<h5
+											className="modal-title fs-2 mx-auto"
+											id="exampleModalLabel"
+										>
+											Your Collection
+										</h5>
 									</div>
+									<div className="modal-body">
+										<div className="d-flex flex-column align-items-center">
+											{myCol.length !== 0 ? (
+												<>
+													{myCol.map(item => (
+														<div className="d-flex w-100 justify-content-between my-2">
+															<h4 className="w-75">{item.collectionName}</h4>
+															<button
+																data-bs-dismiss="modal"
+																className="add-btn"
+																onClick={() => handleAddCollection(item?.id)}
+															>
+																<i class="fas fa-plus"></i>
+															</button>
+														</div>
+													))}
+												</>
+											) : (
+												<>
+													<div className="w-100 d-flex flex-column justify-content-center">
+														<h4 className="mx-auto my-3">
+															No Collection found
+														</h4>
+														<h5 className="mx-auto">
+															Start creating your collection{' '}
+															<span
+																className="pointer"
+																data-bs-dismiss="modal"
+																onClick={() => history.push('/collection')}
+																style={{ color: '#af2e1c' }}
+															>
+																here
+															</span>
+														</h5>
+													</div>
+												</>
+											)}
+										</div>
+									</div>
+									<div className="modal-footer"></div>
 								</div>
-								<div className="modal-footer"></div>
 							</div>
 						</div>
+						{/* modal ends */}
 					</div>
-					{/* modal ends */}
-				</div>
+				) : (
+					<></>
+				)}
 			</div>
 		</>
 	);

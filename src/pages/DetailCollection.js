@@ -27,9 +27,9 @@ const DetailCollection = () => {
 
 	const handleDelete = async idLiterature => {
 		try {
-			let dataItem = { idLiterature, idCollection: parseInt(id) };
+			let data = { idLiterature, idCollection: parseInt(id) };
 			const res = await API.delete('/collection/item', {
-				data: dataItem,
+				data,
 			});
 			if (res.status === 200) {
 				Swal.fire({
