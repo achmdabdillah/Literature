@@ -71,8 +71,8 @@ const Nav = () => {
 						</nav>
 					</div>
 				) : (
-					<div className="nav">
-						<div className="nav-item d-flex flex-row justify-content-between w-50">
+					<div className="nav mb-4 mt-2 d-flex justify-content-between">
+						<div className="nav-item d-flex flex-row justify-content-between w-40">
 							<p
 								className={
 									current === 'profile'
@@ -103,19 +103,20 @@ const Nav = () => {
 							>
 								Add Literature
 							</p>
+						</div>
+						<div className="logo w-25 d-flex justify-content-around align-items-center">
 							<p
-								className="pointer avenir-thin"
+								className="pointer avenir-thin my-auto mx-5 red"
 								onClick={() => dispatch({ type: 'LOGOUT' })}
 							>
 								Logout
 							</p>
-						</div>
-						<div className="logo w-50 d-flex justify-content-end mb-3">
 							<img
 								onClick={() => history.push('/')}
 								src="/assets/logo.png"
 								alt=""
-								className="pointer me-3"
+								className="pointer mb-3 me-5"
+								height="80"
 							/>
 						</div>
 					</div>

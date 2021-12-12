@@ -11,8 +11,8 @@ const DetailCollection = () => {
 	const [data, setData] = useState([]);
 	const { id } = useParams();
 	const [edit, setEdit] = useState(false);
-	const [isOwner, setIsOwner] = useState(true);
 
+	const [isOwner, setIsOwner] = useState(true);
 	const getData = async () => {
 		try {
 			const response = await API.get(`/collection/${id}`);
@@ -28,14 +28,12 @@ const DetailCollection = () => {
 	const handleDelete = async idLiterature => {
 		try {
 			let data = { idLiterature, idCollection: parseInt(id) };
-			const res = await API.delete('/collection/item', {
-				data,
-			});
+			const res = await API.delete('/collection/item', { data });
 			if (res.status === 200) {
 				Swal.fire({
 					icon: 'success',
 					title: 'Success',
-					text: 'Literature added',
+					text: 'Literature deleted',
 				});
 				getData();
 			}
@@ -57,7 +55,7 @@ const DetailCollection = () => {
 						<div className="d-flex justify-content-between mb-3">
 							<div className="d-flex justify-content-between w-100">
 								<h1 className="timesNewRoman my-auto" style={{ fontSize: 30 }}>
-									{data?.[0]?.collections?.collectionName}
+									{data[0]?.collections?.collectionName}
 								</h1>
 								{data.length !== 0 ? (
 									<button
@@ -100,11 +98,11 @@ const DetailCollection = () => {
 															<div className="modal-content">
 																<div className="modal-header">
 																	<h3
-																		className="modal-title fs-3"
+																		className="modal-title fs-4"
 																		id="exampleModalLabel"
 																	>
-																		Delete {item?.literatures?.title} from{' '}
-																		{data[0]?.collections.collectionName}?
+																		Delete "{item?.literatures?.title}" from{' '}
+																		collection?
 																	</h3>
 																</div>
 																<div className="modal-body">
@@ -114,12 +112,12 @@ const DetailCollection = () => {
 																</div>
 																<div className="modal-footer">
 																	<button
+																		onClick={() =>
+																			handleDelete(item?.literatures?.id)
+																		}
 																		type="button"
 																		className="modal-btn"
 																		data-bs-dismiss="modal"
-																		onClick={() =>
-																			handleDelete(item?.literatures.id)
-																		}
 																	>
 																		Delete
 																	</button>

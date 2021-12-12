@@ -9,11 +9,6 @@ const MyCollection = () => {
 	const history = useHistory();
 
 	const [data, setData] = useState([]);
-	const [collectionName, setCollectionName] = useState();
-
-	const handleOnChange = e => {
-		setCollectionName(e.target.value);
-	};
 
 	const getData = async () => {
 		try {
@@ -24,6 +19,16 @@ const MyCollection = () => {
 		}
 	};
 
+	const [collectionName, setCollectionName] = useState('');
+
+	const handleOnChange = e => {
+		setCollectionName(e.target.value);
+	};
+
+	const handleDetail = id => {
+		history.push(`/collection/${id}`);
+	};
+
 	const createCollection = async () => {
 		try {
 			const config = {
@@ -31,6 +36,7 @@ const MyCollection = () => {
 					'Content-type': 'application/json',
 				},
 			};
+
 			const data = { collectionName };
 			const response = await API.post(
 				'/collections',
@@ -41,19 +47,12 @@ const MyCollection = () => {
 				Swal.fire({
 					icon: 'success',
 					title: 'Success',
-					text: 'Literature added',
+					text: 'Collection created',
 				});
 				getData();
 				setCollectionName('');
 			}
-			console.log(response);
-		} catch (error) {
-			console.log(error);
-		}
-	};
-
-	const handleDetail = id => {
-		history.push(`/collection/${id}`);
+		} catch (error) {}
 	};
 
 	useEffect(() => {
@@ -94,8 +93,8 @@ const MyCollection = () => {
 								<div className="modal-body">
 									<div className="modal-input">
 										<input
-											placeholder="Collection name"
 											onChange={handleOnChange}
+											placeholder="Collection name"
 											type="text"
 											id="collection_name"
 											name="collection_name"
@@ -106,9 +105,8 @@ const MyCollection = () => {
 								<div className="modal-footer">
 									<button
 										type="button"
-										className="modal-btn"
-										data-bs-dismiss="modal"
 										onClick={createCollection}
+										className="modal-btn"
 									>
 										Create
 									</button>

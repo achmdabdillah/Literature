@@ -9,7 +9,7 @@ import { Document, Page } from 'react-pdf/dist/esm/entry.webpack';
 import { API } from '../config/api';
 import downloader from '../tools/Downloader';
 
-function PdfViewer({ attachment }) {
+const PdfViewer = ({ attachment }) => {
 	return (
 		<div className="detail-pdf">
 			<Document file={attachment}>
@@ -17,7 +17,7 @@ function PdfViewer({ attachment }) {
 			</Document>
 		</div>
 	);
-}
+};
 
 const DetailLiteratur = () => {
 	const history = useHistory();
@@ -32,23 +32,11 @@ const DetailLiteratur = () => {
 	const { id } = useParams();
 
 	const [data, setData] = useState({});
-	const [myCol, setMyCol] = useState([]);
 
 	const getData = async () => {
 		try {
 			const response = await API.get(`/literatures/${id}`);
 			setData(response.data.data);
-		} catch (error) {
-			alert('Cannot get data');
-		}
-	};
-
-	const date = dateFormatter(data?.publication_date);
-
-	const getCollection = async () => {
-		try {
-			const response = await API.get(`/collection`);
-			setMyCol(response.data.collection);
 		} catch (error) {
 			alert('Cannot get data');
 		}
@@ -61,14 +49,12 @@ const DetailLiteratur = () => {
 					'Content-type': 'application/json',
 				},
 			};
-
 			const response = await API.post(
 				'/collections/add',
 				JSON.stringify({ idLiterature: data?.id, idCollection }),
 				config
 			);
 			getCollection();
-
 			if (response.status === 200) {
 				Swal.fire({
 					icon: 'success',
@@ -76,12 +62,19 @@ const DetailLiteratur = () => {
 					text: 'Literature added',
 				});
 			}
+		} catch (error) {}
+	};
+
+	const date = dateFormatter(data?.publication_date);
+
+	const [myCol, setMyCol] = useState([]);
+
+	const getCollection = async () => {
+		try {
+			const response = await API.get(`/collection`);
+			setMyCol(response.data.collection);
 		} catch (error) {
-			Swal.fire({
-				icon: 'error',
-				title: 'Failed',
-				text: 'Literature already added',
-			});
+			alert('Cannot get data');
 		}
 	};
 
